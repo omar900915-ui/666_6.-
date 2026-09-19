@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Discord Hub</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:Arial,sans-serif;
+    color:white;
+    background:
+      radial-gradient(circle at 20% 0%,#4c1d95 0,#151126 35%,#080812 75%);
+}
+
+header{
+    padding:20px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:#090912cc;
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid #ffffff12;
+}
+
+.nav{
+    max-width:1100px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px;
+}
+
+.logo{
+    font-size:25px;
+    font-weight:900;
+    background:linear-gradient(90deg,#8b5cf6,#38bdf8);
+    -webkit-background-clip:text;
+    color:transparent;
+}
+
+.add{
+    border:0;
+    border-radius:12px;
+    padding:12px 17px;
+    color:white;
+    background:#5865f2;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.hero{
+    max-width:1100px;
+    margin:60px auto 35px;
+    padding:0 20px;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:48px;
+    margin:0 0 15px;
+}
+
+.hero h1 span{
+    color:#8b5cf6;
+}
+
+.hero p{
+    color:#aaa;
+    font-size:17px;
+}
+
+.search{
+    width:min(700px,100%);
+    margin:25px auto 0;
+    display:flex;
+    background:#11111d;
+    border:1px solid #ffffff15;
+    border-radius:16px;
+    padding:7px;
+}
+
+.search input{
+    flex:1;
+    border:0;
+    outline:0;
+    background:transparent;
+    color:white;
+    padding:13px;
+    font-size:16px;
+}
+
+.search button{
+    border:0;
+    border-radius:11px;
+    background:#5865f2;
+    color:white;
+    padding:0 20px;
+}
+
+.container{
+    max-width:1100px;
+    margin:auto;
+    padding:20px;
+}
+
+.categories{
+    display:flex;
+    gap:10px;
+    overflow:auto;
+    padding-bottom:15px;
+}
+
+.category{
+    white-space:nowrap;
+    border:1px solid #ffffff14;
+    background:#ffffff08;
+    color:#ddd;
+    padding:10px 15px;
+    border-radius:30px;
+    cursor:pointer;
+}
+
+.category.active{
+    background:#5865f2;
+    color:white;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:
+        repeat(auto-fit,minmax(270px,1fr));
+    gap:18px;
+}
+
+.card{
+    background:linear-gradient(
+        145deg,
+        #171725,
+        #0e0e17
+    );
+    border:1px solid #ffffff12;
+    border-radius:20px;
+    overflow:hidden;
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:#5865f266;
+    box-shadow:0 20px 50px #0008;
+}
+
+.banner{
+    height:90px;
+    background:
+      linear-gradient(
+        135deg,
+        #5865f2,
+        #8b5cf6
+      );
+}
+
+.info{
+    padding:0 18px 18px;
+}
+
+.avatar{
+    width:75px;
+    height:75px;
+    margin-top:-38px;
+    border-radius:22px;
+    border:5px solid #11111d;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:32px;
+    background:#202033;
+}
+
+.name{
+    font-size:20px;
+    font-weight:bold;
+    margin-top:12px;
+}
+
+.description{
+    color:#999;
+    line-height:1.6;
+    min-height:50px;
+    margin:8px 0;
+}
+
+.stats{
+    display:flex;
+    gap:12px;
+    color:#aaa;
+    font-size:13px;
+    margin:12px 0;
+}
+
+.join{
+    display:block;
+    width:100%;
+    text-align:center;
+    padding:13px;
+    border-radius:12px;
+    background:#5865f2;
+    color:white;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.empty{
+    text-align:center;
+    color:#777;
+    padding:50px;
+    display:none;
+}
+
+footer{
+    text-align:center;
+    color:#666;
+    padding:45px 20px;
+}
+
+@media(max-width:600px){
+    .hero h1{
+        font-size:34px;
+    }
+
+    .nav{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="nav">
+        <div class="logo">💜 DISCORD HUB</div>
+
+        <button class="add"
+                onclick="alert('أضف رابط سيرفرك داخل قائمة servers في الكود')">
+            + أضف سيرفرك
+        </button>
+    </div>
+</header>
+
+
+<section class="hero">
+
+    <h1>
+        اكتشف <span>سيرفرات Discord</span>
+    </h1>
+
+    <p>
+        ابحث عن مجتمعك الجديد وانضم إليه بضغطة واحدة 🚀
+    </p>
+
+    <div class="search">
+
+        <input
+            id="search"
+            placeholder="ابحث عن سيرفر..."
+            oninput="render()"
+        >
+
+        <button onclick="render()">
+            بحث
+        </button>
+
+    </div>
+
+</section>
+
+
+<div class="container">
+
+    <div class="categories">
+
+        <button class="category active"
+                onclick="filterCategory('الكل',this)">
+            الكل
+        </button>
+
+        <button class="category"
+                onclick="filterCategory('ألعاب',this)">
+            🎮 ألعاب
+        </button>
+
+        <button class="category"
+                onclick="filterCategory('ماينكرافت',this)">
+            ⛏️ ماينكرافت
+        </button>
+
+    </div>
+
+
+    <div id="grid" class="grid"></div>
+
+    <div id="empty" class="empty">
+        🔎 لم نجد سيرفرًا بهذا الاسم.
+    </div>
+
+</div>
+
+
+<footer>
+    Discord Hub © 2026
+</footer>
+
+
+<script>
+
+/*
+====================================================
+       🔥 أضف السيرفرات من هنا
+====================================================
+*/
+
+const servers = [
+
+{
+    name:"العاب عشوائي ماينكرافت",
+    category:"ألعاب",
+    icon:"🎮",
+    members:"70",
+    online:"؟؟",
+    description:
+        "مجتمع عربي، .",
+    invite:
+        "https://discord.gg/rm27CveUh"
+},
+{
+    name:"ماينكرافت",
+    category:"ماينكرافت",
+    icon:"⛏️",
+    members:"27",
+    online:"؟؟",
+    description:
+        "سيرفر ماينكرافت عربي، .",
+    invite:
+        "https://discord.gg/Bd79x8TkU"
+      
+},
+{
+    name:"جيفين",
+    category:"ماينكرافت",
+    icon:"",
+    members:"50",
+    online:"؟؟",
+    description:
+        "، ،  مجتمع ماينكرافت.",
+    invite:
+        "https://discord.gg/ccTwUy3xs"
+}
+
+];
+
+
+let currentCategory="الكل";
+
+
+function filterCategory(category,button){
+
+    currentCategory=category;
+
+    document
+        .querySelectorAll(".category")
+        .forEach(x=>{
+            x.classList.remove("active");
+        });
+
+    button.classList.add("active");
+
+    render();
+}
+
+
+function render(){
+
+    const query =
+        document
+        .getElementById("search")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const grid =
+        document.getElementById("grid");
+
+    grid.innerHTML="";
+
+    const filtered =
+        servers.filter(server=>{
+
+            const categoryMatch =
+                currentCategory==="الكل" ||
+                server.category===currentCategory;
+
+            const searchMatch =
+                server.name
+                .toLowerCase()
+                .includes(query) ||
+                server.description
+                .toLowerCase()
+                .includes(query);
+
+            return categoryMatch &&
+                   searchMatch;
+        });
+
+
+    document.getElementById(
+        "empty"
+    ).style.display =
+        filtered.length ? "none":"block";
+
+
+    filtered.forEach(server=>{
+
+        const card =
+            document.createElement("div");
+
+        card.className="card";
+
+        card.innerHTML=`
+
+            <div class="banner"></div>
+
+            <div class="info">
+
+                <div class="avatar">
+                    ${server.icon}
+                </div>
+
+                <div class="name">
+                    ${escapeHTML(server.name)}
+                </div>
+
+                <div class="description">
+                    ${escapeHTML(server.description)}
+                </div>
+
+                <div class="stats">
+                    👥 ${server.members}
+                    <span>🟢 ${server.online} متصل</span>
+                </div>
+
+                <a
+                    class="join"
+                    href="${server.invite}"
+                    target="_blank"
+                    rel="noopener"
+                >
+                    🚀 انضم للسيرفر
+                </a>
+
+            </div>
+        `;
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+function escapeHTML(text){
+
+    return text
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+
+render();
+
+</script>
+
+</body>
+</html>
